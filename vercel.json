@@ -20,6 +20,10 @@
       "dest": "dashboard/$1"
     },
     {
+      "src": "/(styles\\.css|app\\.js)",
+      "dest": "dashboard/$1"
+    },
+    {
       "src": "/",
       "dest": "dashboard/index.html"
     }
