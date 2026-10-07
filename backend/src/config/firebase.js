@@ -20,11 +20,16 @@ function initFirebase() {
   // 1. Support Vercel / Cloud Environment Variables
   if (process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY) {
     try {
-      const privateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n');
+      let rawKey = String(process.env.FIREBASE_PRIVATE_KEY).trim();
+      // Remove wrapping double or single quotes if added by environment variable UI
+      if ((rawKey.startsWith('"') && rawKey.endsWith('"')) || (rawKey.startsWith("'") && rawKey.endsWith("'"))) {
+        rawKey = rawKey.slice(1, -1);
+      }
+      const privateKey = rawKey.replace(/\\n/g, '\n');
       admin.initializeApp({
         credential: admin.credential.cert({
-          projectId: process.env.FIREBASE_PROJECT_ID,
-          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          projectId: String(process.env.FIREBASE_PROJECT_ID).trim(),
+          clientEmail: String(process.env.FIREBASE_CLIENT_EMAIL).trim(),
           privateKey: privateKey
         })
       });

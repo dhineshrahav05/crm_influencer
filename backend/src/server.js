@@ -119,8 +119,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json(responsePayload);
 });
 
-// Start Server
-if (process.env.NODE_ENV !== 'test') {
+// Start Server (only in standalone Node.js environment, not in Vercel serverless)
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`
 ============================================================
