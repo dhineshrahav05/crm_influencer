@@ -3,232 +3,225 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Influencer CRM — Instagram Talent & Campaign Management</title>
-  <meta name="description" content="Centralized CRM to manage Instagram influencer profiles, engagement metrics, tags, notes, and outreach." />
+  <title>Influencer CRM — Creator Discovery & Talent Pipeline</title>
+  <meta name="description" content="Minimalist light-mode Influencer Marketing CRM dashboard to discover, track, tag, and manage creator talent." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Sora:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- App Container -->
-  <div class="app-container">
+  <!-- Outer Page Layout -->
+  <div class="dashboard-viewport">
     
-    <!-- Top Navigation / Header -->
-    <header class="app-header">
-      <div class="header-left">
-        <div class="logo-mark">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="24" height="24" rx="6" fill="url(#ig-grad)" />
-            <path d="M12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7ZM12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15Z" fill="white"/>
-            <circle cx="16.5" cy="7.5" r="1" fill="white"/>
-            <rect x="4.5" y="4.5" width="15" height="15" rx="4" stroke="white" stroke-width="1.5"/>
-            <defs>
-              <linearGradient id="ig-grad" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#FF5252"/>
-                <stop offset="0.5" stop-color="#E040FB"/>
-                <stop offset="1" stop-color="#7C4DFF"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div class="brand-titles">
-          <div class="brand-name-wrap">
-            <h1 class="brand-name">Influencer<span class="brand-accent">CRM</span></h1>
-            <span class="live-pill" id="serverStatusPill"><span class="pulse-dot"></span> Live API</span>
-          </div>
-          <p class="brand-tagline">Instagram Creator Discovery & Pipeline Management</p>
-        </div>
-      </div>
 
-      <div class="header-right">
-        <button id="refreshBtn" class="btn btn-secondary" title="Refresh Influencer List">
-          <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-          </svg>
-          <span>Refresh</span>
-        </button>
-        <button id="openAddModalBtn" class="btn btn-primary" title="Add Influencer Manually">
-          <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
-          <span>Add Influencer</span>
-        </button>
-      </div>
-    </header>
 
-    <!-- Summary KPI Cards -->
-    <section class="metrics-grid" id="metricsSection">
-      <div class="metric-card">
-        <div class="metric-header">
-          <span class="metric-title">Total Influencers</span>
-          <div class="metric-icon-wrap icon-users">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-value-row">
-          <span class="metric-value" id="totalInfluencersCount">-</span>
-          <span class="metric-badge badge-neutral">In Database</span>
-        </div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-header">
-          <span class="metric-title">Combined Audience Reach</span>
-          <div class="metric-icon-wrap icon-reach">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-value-row">
-          <span class="metric-value" id="totalFollowersCount">-</span>
-          <span class="metric-badge badge-success">Total Followers</span>
-        </div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-header">
-          <span class="metric-title">Most-Used Tag</span>
-          <div class="metric-icon-wrap icon-tag">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-              <line x1="7" y1="7" x2="7.01" y2="7"></line>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-value-row">
-          <span class="metric-value metric-tag" id="mostUsedTag">-</span>
-          <span class="metric-badge badge-tag" id="mostUsedTagCount">0 uses</span>
-        </div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-header">
-          <span class="metric-title">Verified Talent</span>
-          <div class="metric-icon-wrap icon-verified">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-value-row">
-          <span class="metric-value" id="verifiedCount">-</span>
-          <span class="metric-badge badge-info" id="verifiedPercent">0%</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Main Section with Table & Controls -->
-    <main class="main-card">
+    <!-- Main Workspace Container (White Rounded Panel) -->
+    <div class="app-container">
       
-      <!-- Toolbar Filter Bar -->
-      <div class="toolbar">
-        <div class="search-box">
-          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Search by name, @username, bio, tags or notes..."
-            autocomplete="off"
-          />
-          <button id="clearSearchBtn" class="clear-search-btn" title="Clear search" style="display: none;">
-            &times;
+      <!-- Top Banner / Header Card -->
+      <header class="app-header">
+        <div class="header-left">
+          <div class="greeting-badge">
+            <span class="greeting-emoji">👋</span>
+              <div class="brand-name-wrap">
+                <h1 class="brand-name">InfluencerCRM</h1>
+                <span class="live-pill" id="serverStatusPill"><span class="pulse-dot"></span> Live API</span>
+              </div>
+              <p class="brand-tagline">Here is your creator discovery and campaign pipeline today</p>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button id="refreshBtn" class="btn btn-secondary" title="Refresh Influencer List">
+            <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            <span>Refresh</span>
+          </button>
+          <button id="openAddModalBtn" class="btn btn-primary" title="Add Influencer Manually">
+            <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>+ Add Influencer</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- KPI Summary Cards -->
+      <section class="metrics-grid" id="metricsSection">
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-title">Total Influencers</span>
+            <div class="metric-icon-wrap icon-users">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+            </div>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value" id="totalInfluencersCount">-</span>
+            <span class="metric-badge badge-neutral">In Database</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-title">Combined Reach</span>
+            <div class="metric-icon-wrap icon-reach">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            </div>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value" id="totalFollowersCount">-</span>
+            <span class="metric-badge badge-success">Total Followers</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-title">Most-Used Tag</span>
+            <div class="metric-icon-wrap icon-tag">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+            </div>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value metric-tag" id="mostUsedTag">-</span>
+            <span class="metric-badge badge-tag" id="mostUsedTagCount">0 uses</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-title">Verified Talent</span>
+            <div class="metric-icon-wrap icon-verified">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value" id="verifiedCount">-</span>
+            <span class="metric-badge badge-info" id="verifiedPercent">0%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Section with Table & Controls -->
+      <main class="main-card">
+        
+        <!-- Toolbar Filter Bar -->
+        <div class="toolbar">
+          <div class="search-box">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search by name, @handle, bio, tags or notes..."
+              autocomplete="off"
+            />
+            <button id="clearSearchBtn" class="clear-search-btn" title="Clear search" style="display: none;">
+              &times;
+            </button>
+          </div>
+
+          <div class="filter-controls">
+            <label class="checkbox-container select-all-wrap">
+              <input type="checkbox" id="selectAllToolbarBtn" />
+              <span class="checkbox-checkmark"></span>
+              <span class="checkbox-label" style="font-weight: 600;">Select All</span>
+            </label>
+            <div class="select-wrapper">
+              <label for="tagFilter" class="sr-only">Filter by Tag</label>
+              <select id="tagFilter" class="form-select">
+                <option value="">All Tags</option>
+              </select>
+            </div>
+
+            <div class="select-wrapper">
+              <label for="sortSelect" class="sr-only">Sort by</label>
+              <select id="sortSelect" class="form-select">
+                <option value="createdAt-desc">Date Added (Newest First)</option>
+                <option value="createdAt-asc">Date Added (Oldest First)</option>
+                <option value="followers-desc">Followers (Highest First)</option>
+                <option value="followers-asc">Followers (Lowest First)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Filters Pill Bar (Dynamic) -->
+        <div class="active-filters-bar" id="activeFiltersBar" style="display: none;">
+          <span class="active-filter-label">Active Filter:</span>
+          <div class="active-filter-chips" id="activeFilterChips"></div>
+          <button id="resetAllFiltersBtn" class="btn-text">Reset all</button>
+        </div>
+
+        <!-- Table Container -->
+        <div class="table-responsive">
+          <table class="influencer-table">
+            <thead>
+              <tr>
+                <th width="40" class="col-checkbox"></th>
+                <th width="220" class="col-creator">Creator</th>
+                <th width="140" class="col-handle">Instagram Handle</th>
+                <th width="100" class="col-followers">Followers</th>
+                <th width="320" class="col-bio">Bio</th>
+                <th width="180" class="col-tags">Tags</th>
+                <th width="200" class="col-notes">Notes</th>
+                <th width="110" class="col-date">Date Added</th>
+                <th width="90" class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="influencersTableBody">
+              <!-- Dynamic rows inserted by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Loading State -->
+        <div class="state-container" id="loadingState" style="display: none;">
+          <div class="spinner"></div>
+          <p class="state-title">Loading CRM records...</p>
+          <p class="state-desc">Fetching profile and engagement metrics from Firestore.</p>
+        </div>
+
+        <!-- Empty State -->
+        <div class="state-container" id="emptyState" style="display: none;">
+          <div class="empty-icon-box">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/>
+              <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+          </div>
+          <h3 class="state-title" id="emptyStateTitle">No Influencers in CRM</h3>
+          <p class="state-desc" id="emptyStateDesc">
+            Capture Instagram profiles using your Chrome extension or add one manually using the button above.
+          </p>
+          <button class="btn btn-primary mt-3" id="emptyStateAddBtn">
+            Add First Influencer
           </button>
         </div>
 
-        <div class="filter-controls">
-          <!-- Tag Filter Dropdown -->
-          <div class="select-wrapper">
-            <label for="tagFilter" class="sr-only">Filter by Tag</label>
-            <select id="tagFilter" class="form-select">
-              <option value="">All Tags</option>
-            </select>
-          </div>
-
-          <!-- Sort Select Dropdown -->
-          <div class="select-wrapper">
-            <label for="sortSelect" class="sr-only">Sort by</label>
-            <select id="sortSelect" class="form-select">
-              <option value="createdAt-desc">Date Added (Newest First)</option>
-              <option value="createdAt-asc">Date Added (Oldest First)</option>
-              <option value="followers-desc">Followers (Highest First)</option>
-              <option value="followers-asc">Followers (Lowest First)</option>
-            </select>
-          </div>
+        <!-- Table Footer / Count Info -->
+        <div class="table-footer">
+          <span id="resultsCountText">Showing 0 creators</span>
+          <span class="footer-tip">Tip: Double-click notes or click Edit to update creator records.</span>
         </div>
-      </div>
+      </main>
+    </div>
+  </div>
 
-      <!-- Active Filters Pill Bar (Dynamic) -->
-      <div class="active-filters-bar" id="activeFiltersBar" style="display: none;">
-        <span class="active-filter-label">Active Filter:</span>
-        <div class="active-filter-chips" id="activeFilterChips"></div>
-        <button id="resetAllFiltersBtn" class="btn-text">Reset all</button>
-      </div>
-
-      <!-- Table Container -->
-      <div class="table-responsive">
-        <table class="influencer-table" id="influencerTable">
-          <thead>
-            <tr>
-              <th class="th-avatar">Creator</th>
-              <th class="th-username">Instagram Handle</th>
-              <th class="th-followers">Followers</th>
-              <th class="th-bio">Bio</th>
-              <th class="th-tags">Tags</th>
-              <th class="th-notes">Notes</th>
-              <th class="th-date">Date Added</th>
-              <th class="th-actions">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="influencersTableBody">
-            <!-- Dynamic rows inserted by JavaScript -->
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Loading State -->
-      <div class="state-container" id="loadingState" style="display: none;">
-        <div class="spinner"></div>
-        <p class="state-title">Loading CRM records...</p>
-        <p class="state-desc">Fetching profile and engagement metrics from Firestore.</p>
-      </div>
-
-      <!-- Empty State -->
-      <div class="state-container" id="emptyState" style="display: none;">
-        <div class="empty-icon-box">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <line x1="19" y1="8" x2="19" y2="14"/>
-            <line x1="22" y1="11" x2="16" y2="11"/>
-          </svg>
-        </div>
-        <h3 class="state-title" id="emptyStateTitle">No Influencers in CRM</h3>
-        <p class="state-desc" id="emptyStateDesc">
-          Capture Instagram profiles using your Chrome extension or add one manually using the button above.
-        </p>
-        <button class="btn btn-primary mt-3" id="emptyStateAddBtn">
-          Add First Influencer
-        </button>
-      </div>
-
-      <!-- Table Footer / Count Info -->
-      <div class="table-footer">
-        <span id="resultsCountText">Showing 0 creators</span>
-        <span class="footer-tip">Tip: Double-click notes or click Edit to update creator records.</span>
-      </div>
-    </main>
+  <!-- Bulk Action Bar -->
+  <div class="bulk-action-bar" id="bulkActionBar" style="display: none;">
+    <span class="bulk-count" id="bulkCountText">0 selected</span>
+    <div class="bulk-actions">
+      <button class="btn btn-secondary" id="bulkClearBtn">Clear</button>
+      <button class="btn btn-secondary" id="bulkSelectAllBtn">Select All</button>
+      <button class="btn btn-danger" id="bulkDeleteBtn">Delete Selected</button>
+    </div>
   </div>
 
   <!-- ========================================== -->
@@ -267,7 +260,6 @@
           <div class="form-group">
             <label for="tagInput">Tags <span class="label-hint">(Press Enter or comma to add tag chip)</span></label>
             <div class="tags-input-container" id="editTagsContainer">
-              <!-- Rendered chips -->
               <input type="text" id="tagInput" class="tag-inline-input" placeholder="Add a tag..." />
             </div>
           </div>
@@ -298,11 +290,9 @@
     <div class="modal-card modal-card-sm" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
       <div class="modal-header header-danger">
         <div class="modal-icon-danger">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="3 6 5 6 21 6"></polyline>
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            <line x1="10" y1="11" x2="10" y2="17"></line>
-            <line x1="14" y1="11" x2="14" y2="17"></line>
           </svg>
         </div>
         <div>

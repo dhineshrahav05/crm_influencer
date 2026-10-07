@@ -27,7 +27,8 @@ const state = {
     order: 'desc'
   },
   isLoading: false,
-  searchDebounceTimer: null
+  searchDebounceTimer: null,
+  selectedUsernames: new Set()
 };
 
 // =============================================================================
@@ -54,6 +55,14 @@ const elements = {
   activeFiltersBar: document.getElementById('activeFiltersBar'),
   activeFilterChips: document.getElementById('activeFilterChips'),
   resetAllFiltersBtn: document.getElementById('resetAllFiltersBtn'),
+  selectAllToolbarBtn: document.getElementById('selectAllToolbarBtn'),
+
+  // Bulk Actions
+  bulkActionBar: document.getElementById('bulkActionBar'),
+  bulkCountText: document.getElementById('bulkCountText'),
+  bulkClearBtn: document.getElementById('bulkClearBtn'),
+  bulkSelectAllBtn: document.getElementById('bulkSelectAllBtn'),
+  bulkDeleteBtn: document.getElementById('bulkDeleteBtn'),
 
   // Table & States
   tableBody: document.getElementById('influencersTableBody'),
@@ -222,6 +231,7 @@ async function fetchInfluencers() {
     }
 
     state.influencers = result.data || [];
+    state.selectedUsernames.clear();
     renderDashboard();
     updateTagFilterDropdown();
     updateMetrics();
@@ -377,8 +387,20 @@ function renderDashboard() {
           .join('');
       }
 
+      const isSelected = state.selectedUsernames.has(username);
+      const selectedClass = isSelected ? 'selected' : '';
+      const checkedAttr = isSelected ? 'checked' : '';
+
       return `
-        <tr data-username="${username}">
+        <tr class="influencer-row ${selectedClass}" data-username="${username}">
+          <td>
+            <div class="card-select-wrap">
+              <label class="checkbox-container">
+                <input type="checkbox" class="creator-checkbox" value="${username}" ${checkedAttr} />
+                <span class="checkbox-checkmark"></span>
+              </label>
+            </div>
+          </td>
           <td>
             <div class="creator-cell">
               <div class="avatar-wrapper">${avatarHtml}</div>
@@ -399,19 +421,14 @@ function renderDashboard() {
           <td>
             <span class="followers-badge">${followersFormatted}</span>
           </td>
-          <td>
-            <div class="bio-cell-wrap">
-              <div class="bio-text">${bioText}</div>
-              ${influencer.bio ? `<div class="bio-tooltip">${bioText}</div>` : ''}
-            </div>
+          <td class="col-bio">
+            <div class="bio-text">${bioText}</div>
           </td>
           <td>
             <div class="tag-chips-wrap">${tagsHtml}</div>
           </td>
           <td>
-            <div class="notes-cell-wrap">
-              <div class="notes-text" title="${escapeHtml(influencer.notes || '')}">${notesText}</div>
-            </div>
+            <div class="notes-text" title="Notes">${notesText}</div>
           </td>
           <td>
             <span class="date-cell">${dateFormatted}</span>
@@ -432,6 +449,24 @@ function renderDashboard() {
     .join('');
 
   elements.tableBody.innerHTML = rowsHtml;
+  updateBulkActionUI();
+}
+
+function updateBulkActionUI() {
+  const selectedCount = state.selectedUsernames.size;
+  const totalCount = state.influencers.length;
+
+  if (selectedCount > 0) {
+    elements.bulkActionBar.style.display = 'flex';
+    elements.bulkCountText.textContent = `${selectedCount} selected`;
+  } else {
+    elements.bulkActionBar.style.display = 'none';
+  }
+
+  const allSelected = totalCount > 0 && selectedCount === totalCount;
+  if (elements.selectAllToolbarBtn) {
+    elements.selectAllToolbarBtn.checked = allSelected;
+  }
 }
 
 /**
@@ -711,8 +746,25 @@ function setupEventListeners() {
     fetchInfluencers();
   });
 
-  // Table dynamic clicks (Edit, Delete, Tag Chip filter)
+  // Table dynamic clicks (Edit, Delete, Tag Chip filter, Checkbox)
   elements.tableBody.addEventListener('click', (e) => {
+    // Checkbox toggle
+    if (e.target.matches('.creator-checkbox')) {
+      const checkbox = e.target;
+      const username = checkbox.value;
+      if (checkbox.checked) {
+        state.selectedUsernames.add(username);
+      } else {
+        state.selectedUsernames.delete(username);
+      }
+      const card = checkbox.closest('.influencer-card');
+      if (card) {
+        card.classList.toggle('selected', checkbox.checked);
+      }
+      updateBulkActionUI();
+      // Don't return, let bubbling happen if needed, but it's a checkbox so fine.
+    }
+
     // Check if clicked an action button
     const actionBtn = e.target.closest('[data-action]');
     if (actionBtn) {
@@ -817,6 +869,72 @@ function setupEventListeners() {
   });
 
   elements.closeDeleteModalBtn.addEventListener('click', closeDeleteModal);
+  elements.cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+
+  // Bulk Actions
+  const handleSelectAll = (e) => {
+    const isChecked = e.target.checked !== undefined ? e.target.checked : true;
+    if (isChecked) {
+      state.influencers.forEach(inf => state.selectedUsernames.add(inf.username));
+    } else {
+      state.selectedUsernames.clear();
+    }
+    renderDashboard();
+  };
+
+  if (elements.selectAllToolbarBtn) {
+    elements.selectAllToolbarBtn.addEventListener('change', handleSelectAll);
+  }
+  if (elements.bulkSelectAllBtn) {
+    elements.bulkSelectAllBtn.addEventListener('click', () => {
+      if (elements.selectAllToolbarBtn) elements.selectAllToolbarBtn.checked = true;
+      handleSelectAll({ target: { checked: true } });
+    });
+  }
+  if (elements.bulkClearBtn) {
+    elements.bulkClearBtn.addEventListener('click', () => {
+      if (elements.selectAllToolbarBtn) elements.selectAllToolbarBtn.checked = false;
+      handleSelectAll({ target: { checked: false } });
+    });
+  }
+  if (elements.bulkDeleteBtn) {
+    elements.bulkDeleteBtn.addEventListener('click', async () => {
+      if (state.selectedUsernames.size === 0) return;
+      
+      const confirmMsg = `Delete ${state.selectedUsernames.size} influencers? This can't be undone.`;
+      if (!confirm(confirmMsg)) return;
+
+      elements.bulkDeleteBtn.disabled = true;
+      elements.bulkDeleteBtn.textContent = 'Deleting...';
+
+      const usernames = Array.from(state.selectedUsernames);
+      let successCount = 0;
+      let failCount = 0;
+
+      await Promise.allSettled(
+        usernames.map(async (username) => {
+          try {
+            await apiDeleteInfluencer(username);
+            successCount++;
+          } catch (err) {
+            failCount++;
+          }
+        })
+      );
+
+      elements.bulkDeleteBtn.disabled = false;
+      elements.bulkDeleteBtn.textContent = 'Delete Selected';
+
+      if (failCount === 0) {
+        showToast('success', 'Bulk Delete', `Successfully deleted ${successCount} influencers.`);
+      } else {
+        showToast('warning', 'Bulk Delete', `Deleted ${successCount}, but failed to delete ${failCount}.`);
+      }
+
+      state.selectedUsernames.clear();
+      fetchInfluencers();
+    });
+  }
   elements.cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 
   // Add Modal Triggers
