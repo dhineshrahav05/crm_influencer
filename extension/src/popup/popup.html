@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Influencer CRM Saver</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="brand-row">
+        <div class="brand-logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="6" fill="url(#ig-p-grad)" />
+            <path d="M12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7ZM12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15Z" fill="white"/>
+            <circle cx="16.5" cy="7.5" r="1" fill="white"/>
+            <defs>
+              <linearGradient id="ig-p-grad" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#FF5252"/>
+                <stop offset="0.5" stop-color="#E040FB"/>
+                <stop offset="1" stop-color="#7C4DFF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-title">Influencer CRM</span>
+        <span class="status-indicator" id="apiStatusPill">
+          <span class="dot"></span> Checking
+        </span>
+      </div>
+    </header>
+
+    <!-- Quick Actions -->
+    <div class="action-card">
+      <button class="btn btn-gradient" id="openDashboardBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        <span>Open CRM Dashboard</span>
+      </button>
+    </div>
+
+    <!-- API Configuration Card -->
+    <section class="config-section">
+      <div class="section-header">
+        <span class="section-title">Backend API Settings</span>
+      </div>
+      <div class="config-body">
+        <div class="input-group">
+          <label for="apiUrlInput">API Base URL</label>
+          <input type="text" id="apiUrlInput" placeholder="http://localhost:5000" />
+        </div>
+        <div class="config-actions">
+          <button class="btn btn-secondary" id="testConnectionBtn">Test</button>
+          <button class="btn btn-primary" id="saveSettingsBtn">Save</button>
+        </div>
+        <div class="connection-status-msg" id="connectionStatusMsg"></div>
+      </div>
+    </section>
+
+    <!-- Recent Saves Section -->
+    <section class="recent-section">
+      <div class="section-header">
+        <span class="section-title">Recent Captures</span>
+      </div>
+      <div class="recent-list" id="recentList">
+        <!-- Dynamic recent creators -->
+      </div>
+      <div class="empty-recent" id="emptyRecent" style="display: none;">
+        <span>No profiles captured yet. Visit any Instagram creator profile to save!</span>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <span>Influencer CRM Saver v1.0 • Manifest V3</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

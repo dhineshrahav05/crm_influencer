@@ -1,0 +1,167 @@
+/* ==========================================================================
+   Influencer CRM Saver — Shadow DOM Styles v2
+   No modal. Just a FAB button + toast notification.
+   Isolated inside Shadow Root to prevent Instagram CSS conflicts.
+   ========================================================================== */
+
+:host {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   Floating Action Button (FAB)
+   ========================================================================== */
+
+#crm-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 2147483647;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 18px 0 6px;
+  height: 44px;
+
+  background: #0f172a;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.55),
+    0 0 22px rgba(124, 58, 237, 0.35);
+
+  color: #f8fafc;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s ease,
+              border-color 0.2s ease,
+              background 0.2s ease;
+
+  /* pointer-events enabled on FAB itself */
+  pointer-events: auto;
+}
+
+#crm-fab:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.65),
+    0 0 28px rgba(124, 58, 237, 0.55);
+  border-color: rgba(168, 85, 247, 0.65);
+}
+
+#crm-fab:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}
+
+#crm-fab:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+/* ── FAB icon circle ── */
+.crm-fab-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #3b82f6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── State: Saved (already in CRM) ── */
+#crm-fab.crm-fab-saved {
+  background: #064e3b;
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    0 0 18px rgba(16, 185, 129, 0.3);
+}
+
+#crm-fab.crm-fab-saved .crm-fab-icon {
+  background: #10b981;
+}
+
+/* ── State: Busy (checking / saving) ── */
+#crm-fab.crm-fab-busy {
+  background: #1e1b4b;
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+/* ── Spinner ── */
+.crm-spin {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: crm-spin 0.65s linear infinite;
+  margin-right: 5px;
+  flex-shrink: 0;
+}
+
+@keyframes crm-spin {
+  to { transform: rotate(360deg); }
+}
+
+.crm-fab-text {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   Toast Notification
+   ========================================================================== */
+
+.crm-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 2147483647;
+  pointer-events: auto;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 18px;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  animation: crm-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes crm-slide-in {
+  from { transform: translateX(calc(100% + 32px)); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+.crm-toast-success { background: linear-gradient(135deg, #059669, #047857); }
+.crm-toast-error   { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+.crm-toast-info    { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+
+.crm-toast svg {
+  flex-shrink: 0;
+}

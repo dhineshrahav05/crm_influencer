@@ -1,0 +1,33 @@
+{
+  "name": "influencer-crm-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Influencer Marketing CRM with Firebase Firestore integration",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "crm",
+    "influencer",
+    "instagram",
+    "firebase",
+    "firestore",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.0.1",
+    "firebase-admin": "^12.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
